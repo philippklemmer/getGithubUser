@@ -1,9 +1,10 @@
-package github 
+package githubapi 
 
 import (
 	"net/http"
 	"time"
 	"encoding/json"	
+	"log"
 )
 
 type UserData struct {
@@ -12,14 +13,16 @@ type UserData struct {
 	HtmlUrl string `json:"html_url"`
 }
 
-func GetGitubUser() (*UserData, error) {
+func GetGitubUser(username string) (*UserData, error) {
 	baseUrl := "https:github.com/"
-	
+	requestUrl := baseUrl + username
+	log.Println(requestUrl)
+
 	client := http.Client {
 		Timeout: time.Second * 2,
 	}
 
-	req, err := http.NewRequest(http.MethodGet, baseUrl, nil)
+	req, err := http.NewRequest(http.MethodGet, requestUrl, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -29,7 +32,8 @@ func GetGitubUser() (*UserData, error) {
 	if err != nil {
 		return nil, err	
 	}
-	
+	defer res.Body.Close()	
+
 	data := UserData{}
 	if err = json.NewDecoder(res.Body).Decode(&data); err != nil {
 		return nil, err

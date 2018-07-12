@@ -1,22 +1,38 @@
 package main
 
 import (
-		"fmt"
-		"os"
+	"errors"
+	"fmt"
+	"log"
+	"os"
 
-//		"github.com/philippklemmer/getGithubUser/githubapi"
+	"github.com/philippklemmer/getGithubUser/githubapi"
 )
 
+func parseArgs(args []string) (string, error) {
+	if len(args) != 2 {
+		if len(args) < 2 {
+			return "", errors.New("You have to enter an Github Accountname to use this tool")
+		} else {
+			return "", errors.New("Enter only one Github Account as a Paramater")
+		}
+	}
+	return args[1], nil
+}
+
 func main() {
-fmt.Print(os.Args)
-	if len(os.Args != 2 {
-		if len(os.Args < 2) {
-			fmt.Println("You have to enter an Github Accountname to use this tool")
-			} else {
-		fmt.Printkn("Enter only one Github Account as a Parameter")
-		os.Exit()
+	username, err := parseArgs(os.Args)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("Searching for a user with the name: ", username)
+
+	data, err := githubapi.GetGithubUser(username)
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	username := os.Args[1]
-//user := githubapi.getGithubUser(name)	
+	fmt.Println(data)
+	
+
 }
