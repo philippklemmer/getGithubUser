@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"time"
 	"encoding/json"	
-	"log"
 )
 
 type UserData struct {
@@ -13,13 +12,11 @@ type UserData struct {
 	HtmlUrl string `json:"html_url"`
 }
 
-func GetGitubUser(username string) (*UserData, error) {
-	baseUrl := "https:github.com/"
+func GetGithubUser(username string) (*UserData, error) {
+	baseUrl := "https://api.github.com/users/"
 	requestUrl := baseUrl + username
-	log.Println(requestUrl)
-
 	client := http.Client {
-		Timeout: time.Second * 2,
+		Timeout: time.Second * 4,
 	}
 
 	req, err := http.NewRequest(http.MethodGet, requestUrl, nil)

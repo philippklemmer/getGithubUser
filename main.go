@@ -3,7 +3,6 @@ package main
 import (
 	"errors"
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/philippklemmer/getGithubUser/githubapi"
@@ -25,14 +24,12 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("Searching for a user with the name: ", username)
+	fmt.Println("Searching for a user with the name:", username)
 
 	data, err := githubapi.GetGithubUser(username)
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	fmt.Println(data)
-	
-
+	fmt.Println(data.Name, data.Login)
+	fmt.Println(data.HtmlUrl)
 }
