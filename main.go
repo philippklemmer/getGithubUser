@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"log"
 
 	"github.com/philippklemmer/getGithubUser/githubapi"
 )
